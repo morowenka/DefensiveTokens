@@ -39,10 +39,11 @@ def load_model_and_tokenizer(model_name, dtype="bfloat16"):
 
     logger.info("Loading model: %s", model_name)
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, use_fast=False)
+    device_map = "mps" if torch.backends.mps.is_available() else "auto"
     model = transformers.AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch_dtype,
-        device_map="auto",
+        device_map=device_map,
     )
     model.eval()
 

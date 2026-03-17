@@ -41,7 +41,10 @@ def main():
 
     # Free memory
     del model
-    torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    import gc
+    gc.collect()
 
     # Evaluate DefensiveToken
     model, tokenizer = load_model_and_tokenizer(model_name, dtype)

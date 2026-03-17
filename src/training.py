@@ -80,12 +80,13 @@ def train_defensive_tokens(model, tokenizer, samples, config):
     freeze_model_except_defensive_tokens(model, token_ids)
 
     dataset = DefensiveDataset(samples, tokenizer, max_length)
+    use_mps = torch.backends.mps.is_available()
     dataloader = DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=4,
-        pin_memory=True,
+        num_workers=0 if use_mps else 4,
+        pin_memory=not use_mps,
     )
 
     optimizer = torch.optim.SGD(

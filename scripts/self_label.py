@@ -31,7 +31,7 @@ def self_label_with_vllm(config):
     llm = LLM(
         model=model_name,
         dtype=config["model"]["dtype"],
-        tensor_parallel_size=4,
+        tensor_parallel_size=1,
         max_model_len=2048,
     )
     tokenizer = llm.get_tokenizer()

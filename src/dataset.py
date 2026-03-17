@@ -6,7 +6,8 @@ import random
 from pathlib import Path
 
 import numpy as np
-from datasets import load_dataset
+from datasets import Dataset, load_dataset
+from huggingface_hub import hf_hub_download
 
 from src.attacks import train_ignore_attack, train_completion_attack
 
@@ -25,7 +26,14 @@ def load_alpaca_farm_eval():
 
     Returns 805 samples. For security eval, filter to those with non-empty input.
     """
-    ds = load_dataset("tatsu-lab/alpaca_farm", "alpaca_farm_evaluation", split="eval")
+    path = hf_hub_download(
+        repo_id="tatsu-lab/alpaca_farm",
+        filename="alpaca_farm_evaluation.json",
+        repo_type="dataset",
+    )
+    with open(path) as f:
+        data = json.load(f)
+    ds = Dataset.from_list(data)
     logger.info("Loaded %d AlpacaFarm eval samples", len(ds))
     return ds
 
