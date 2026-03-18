@@ -15,7 +15,7 @@ def generate_response(model, tokenizer, prompt, max_new_tokens=256, prefix=None)
 
     with torch.no_grad():
         if prefix is not None:
-            base_embeds = model.get_input_embeddings()(input_ids)
+            base_embeds = model.get_input_embeddings()(input_ids).to(model.device)
             inputs_embeds, attention_mask, _ = prefix.prepend(
                 base_embeds, attention_mask,
             )

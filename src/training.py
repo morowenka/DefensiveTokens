@@ -99,10 +99,10 @@ def train_defensive_tokens(model, tokenizer, samples, config):
     embed_layer = model.get_input_embeddings()
     model.train()
 
-    for epoch in tqdm(range(num_epochs), desc="Training DefensiveTokens", ):
+    for epoch in tqdm(range(num_epochs), desc="Epoch", position=0, leave=True):
         optimizer.zero_grad()
 
-        for step, batch in enumerate(dataloader):
+        for (step, batch) in tqdm(enumerate(dataloader), desc="Step", position=1, leave=True, total=len(dataloader)):
             input_ids = batch["input_ids"].to(device)
             attention_mask = batch["attention_mask"].to(device)
             labels = batch["labels"].to(device)

@@ -35,9 +35,9 @@ def main():
     model, tokenizer = load_model_and_tokenizer(model_name, dtype)
     all_results = []
 
-    for defense_name in ["none", "reminder", "sandwich"]:
-        result = evaluate_defense(model, tokenizer, eval_samples, defense_name, config)
-        all_results.append(result)
+    # for defense_name in ["none", "reminder", "sandwich"]:
+    #     result = evaluate_defense(model, tokenizer, eval_samples, defense_name, config)
+    #     all_results.append(result)
 
     # Free memory
     del model
@@ -51,7 +51,7 @@ def main():
     # Evaluate DefensiveToken
     model, tokenizer = load_model_and_tokenizer(model_name, dtype)
     device = next(model.parameters()).device
-    prefix = DefensivePrefix.load(config["training"]["output_dir"], device=device)
+    prefix = DefensivePrefix.load(config["training"]["output_dir"]).to(device)
     model.eval()
 
     dt_result = evaluate_defense(
