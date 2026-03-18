@@ -1,18 +1,13 @@
-"""DefensiveTokens training: freeze model, train only defensive token embeddings."""
+"""DefensiveTokens training: freeze model, train only prefix embeddings."""
 
 import logging
-from pathlib import Path
 
+from tqdm import tqdm
 import torch
 from torch.utils.data import Dataset, DataLoader
 from transformers import get_linear_schedule_with_warmup
 
-from src.model import (
-    format_prompt,
-    add_defensive_tokens,
-    freeze_model_except_defensive_tokens,
-    save_defensive_tokens,
-)
+from src.model import DefensivePrefix, format_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +30,6 @@ class DefensiveDataset(Dataset):
         prompt = format_prompt(
             self.tokenizer, instruction,
             data if data.strip() else None,
-            use_defensive_tokens=True,
         )
         full_text = prompt + target + self.tokenizer.eos_token
 
@@ -50,10 +44,7 @@ class DefensiveDataset(Dataset):
         attention_mask = encoded["attention_mask"].squeeze(0)
 
         # Only compute loss on response tokens
-        prompt_encoded = self.tokenizer(
-            prompt, max_length=self.max_length, truncation=True
-        )
-        prompt_len = len(prompt_encoded["input_ids"])
+        prompt_len = len(self.tokenizer(prompt, add_special_tokens=False)["input_ids"])
 
         labels = input_ids.clone()
         labels[:prompt_len] = -100
@@ -67,7 +58,7 @@ class DefensiveDataset(Dataset):
 
 
 def train_defensive_tokens(model, tokenizer, samples, config):
-    """Train DefensiveTokens: add special tokens, freeze model, train embeddings."""
+    """Train DefensiveTokens: create prefix, freeze model, train prefix embeddings."""
     num_tokens = config["training"]["num_defensive_tokens"]
     lr = config["training"]["learning_rate"]
     num_epochs = config["training"]["num_epochs"]
@@ -76,61 +67,82 @@ def train_defensive_tokens(model, tokenizer, samples, config):
     max_length = config["training"]["max_length"]
     output_dir = config["training"]["output_dir"]
 
-    token_ids = add_defensive_tokens(model, tokenizer, num_tokens)
-    freeze_model_except_defensive_tokens(model, token_ids)
+    # Freeze entire model
+    for param in model.parameters():
+        param.requires_grad = False
+
+    device = next(model.parameters()).device
+    hidden_size = model.config.hidden_size
+    dtype = next(model.parameters()).dtype
+
+    prefix = DefensivePrefix(hidden_size, num_tokens, dtype=dtype).to(device)
+
+    trainable = sum(p.numel() for p in prefix.parameters())
+    logger.info("Trainable parameters: %d (prefix only)", trainable)
 
     dataset = DefensiveDataset(samples, tokenizer, max_length)
-    use_mps = torch.backends.mps.is_available()
+    use_cuda = device.type == "cuda"
     dataloader = DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=True,
-        num_workers=0 if use_mps else 4,
-        pin_memory=not use_mps,
+        num_workers=4 if use_cuda else 0,
+        pin_memory=use_cuda,
     )
 
-    optimizer = torch.optim.SGD(
-        [model.get_input_embeddings().weight],
-        lr=lr,
-    )
+    optimizer = torch.optim.SGD([prefix.prefix], lr=lr)
     total_steps = (len(dataloader) // grad_accum) * num_epochs
     scheduler = get_linear_schedule_with_warmup(
         optimizer, num_warmup_steps=0, num_training_steps=total_steps
     )
 
+    embed_layer = model.get_input_embeddings()
     model.train()
-    device = next(model.parameters()).device
 
-    for epoch in range(num_epochs):
-        total_loss = 0.0
+    for epoch in tqdm(range(num_epochs), desc="Training DefensiveTokens", ):
         optimizer.zero_grad()
 
         for step, batch in enumerate(dataloader):
-            batch = {k: v.to(device) for k, v in batch.items()}
-            outputs = model(**batch)
+            input_ids = batch["input_ids"].to(device)
+            attention_mask = batch["attention_mask"].to(device)
+            labels = batch["labels"].to(device)
+
+            base_embeds = embed_layer(input_ids)
+            inputs_embeds, attention_mask, labels = prefix.prepend(
+                base_embeds, attention_mask, labels,
+            )
+
+            outputs = model(
+                inputs_embeds=inputs_embeds,
+                attention_mask=attention_mask,
+                labels=labels,
+            )
             loss = outputs.loss / grad_accum
             loss.backward()
+
+            if epoch == 0 and step == 0:
+                updated = sum(
+                    p.numel() for p in model.parameters() if p.grad is not None and p.grad.any()
+                ) + sum(
+                    p.numel() for p in prefix.parameters() if p.grad is not None
+                )
+                logger.info("Actual trainable parameters with gradients: %d", updated)
 
             if (step + 1) % grad_accum == 0:
                 optimizer.step()
                 scheduler.step()
                 optimizer.zero_grad()
 
-            total_loss += outputs.loss.item()
+            logger.info(
+                "Epoch %d, Step %d/%d, Loss: %.4f",
+                epoch + 1, step + 1, len(dataloader), outputs.loss.item(),
+            )
 
-            if (step + 1) % 100 == 0:
-                avg_loss = total_loss / (step + 1)
-                logger.info(
-                    "Epoch %d, Step %d/%d, Loss: %.4f",
-                    epoch + 1, step + 1, len(dataloader), avg_loss,
-                )
-
-        avg_loss = total_loss / len(dataloader)
-        logger.info("Epoch %d finished. Average loss: %.4f", epoch + 1, avg_loss)
+        logger.info("Epoch %d finished", epoch + 1)
 
     # Handle remaining gradients
     if len(dataloader) % grad_accum != 0:
         optimizer.step()
 
-    save_defensive_tokens(model, tokenizer, token_ids, output_dir)
-    return model, token_ids
+    prefix.save(output_dir)
+    return prefix

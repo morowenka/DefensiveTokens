@@ -1,6 +1,6 @@
 """Step 3: Train DefensiveTokens.
 
-Adds special tokens to vocabulary, freezes model, trains only token embeddings.
+Creates a trainable prefix, freezes model, trains only prefix embeddings.
 """
 
 import logging

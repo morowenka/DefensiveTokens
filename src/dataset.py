@@ -18,6 +18,10 @@ def load_alpaca_cleaned():
     """Load Cleaned Alpaca dataset from HuggingFace."""
     ds = load_dataset("yahma/alpaca-cleaned", split="train")
     logger.info("Loaded %d samples from alpaca-cleaned", len(ds))
+
+    ds = ds.shuffle(seed=52).select(range(5000))
+    logger.info("Reduced dataset to %d samples", len(ds))
+
     return ds
 
 
@@ -66,25 +70,15 @@ def build_defensive_dataset(self_labeled_path, output_path, injection_ratio=0.5,
     samples = load_jsonl(self_labeled_path)
     logger.info("Building defensive dataset from %d self-labeled samples", len(samples))
 
-    # Only inject into samples that have non-empty data field
-    has_data = [s for s in samples if s.get("data", "").strip()]
-    no_data = [s for s in samples if not s.get("data", "").strip()]
+    num_to_inject = int(len(samples) * 0.5)
 
-    num_to_inject = int(len(has_data) * injection_ratio)
-
-    random.shuffle(has_data)
-    injected_samples = has_data[:num_to_inject]
-    clean_data_samples = has_data[num_to_inject:]
+    random.shuffle(samples)
+    injected_samples = samples[:num_to_inject]
+    clean_samples = samples[num_to_inject:]
 
     defensive_samples = []
 
-    # Clean samples (no data + clean data samples)
-    for s in no_data:
-        record = s.copy()
-        record["is_injected"] = False
-        defensive_samples.append(record)
-
-    for s in clean_data_samples:
+    for s in clean_samples:
         record = s.copy()
         record["is_injected"] = False
         defensive_samples.append(record)

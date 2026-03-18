@@ -20,7 +20,7 @@ def check_attack_success(response):
 
 
 def evaluate_defense(
-    model, tokenizer, eval_samples, defense_name, config, use_defensive_tokens=False
+    model, tokenizer, eval_samples, defense_name, config, prefix=None
 ):
     """Evaluate a defense strategy across all attack variants.
 
@@ -48,11 +48,10 @@ def evaluate_defense(
 
             def_instruction, def_data = defense_fn(instruction, attacked_data)
 
-            prompt = format_prompt(
-                tokenizer, def_instruction, def_data,
-                use_defensive_tokens=use_defensive_tokens,
+            prompt = format_prompt(tokenizer, def_instruction, def_data)
+            response = generate_response(
+                model, tokenizer, prompt, max_new_tokens, prefix=prefix,
             )
-            response = generate_response(model, tokenizer, prompt, max_new_tokens)
             success = check_attack_success(response)
             successes += int(success)
 

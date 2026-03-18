@@ -1,30 +1,11 @@
-import json
 import logging
 from pathlib import Path
 
 import torch
+import torch.nn as nn
 import transformers
 
 logger = logging.getLogger(__name__)
-
-
-def _build_defensive_token_names(num_tokens):
-    return [f"[DefensiveToken{i}]" for i in range(num_tokens)]
-
-
-def _build_chat_template(num_tokens):
-    token_str = "".join(f"[DefensiveToken{i}]" for i in range(num_tokens))
-    return (
-        "{%- if add_defensive_tokens %}\n"
-        "{{- '" + token_str + "' }}\n"
-        "{%- endif %}\n"
-        "{%- for message in messages %}\n"
-        "{{- '<|im_start|>' + message['role'] + '\\n' + message['content'] | trim + '\\n\\n<|im_end|>\\n' }}\n"
-        "{%- endfor %}\n"
-        "{%- if add_generation_prompt %}\n"
-        "{{- '<|im_start|>assistant\\n' }}\n"
-        "{%- endif %}\n"
-    )
 
 FILTERED_BASE_TOKENS = ["[INST]", "[INPT]", "[RESP]", "[MARK]", "[COLN]", "##"]
 
@@ -39,11 +20,10 @@ def load_model_and_tokenizer(model_name, dtype="bfloat16"):
 
     logger.info("Loading model: %s", model_name)
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, use_fast=False)
-    device_map = "mps" if torch.backends.mps.is_available() else "auto"
     model = transformers.AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=torch_dtype,
-        device_map=device_map,
+        device_map="auto",
     )
     model.eval()
 
@@ -53,93 +33,71 @@ def load_model_and_tokenizer(model_name, dtype="bfloat16"):
     return model, tokenizer
 
 
-def add_defensive_tokens(model, tokenizer, num_tokens=5):
-    """Add DefensiveToken special tokens to tokenizer and resize model embeddings.
+class DefensivePrefix(nn.Module):
+    """Trainable prefix embeddings prepended to model input.
 
-    Returns the indices of the new tokens.
+    This is the core of the DefensiveToken approach: a small set of
+    learnable vectors that are concatenated before the input embeddings.
+    The rest of the model stays frozen.
     """
-    token_names = _build_defensive_token_names(num_tokens)
-    num_new = tokenizer.add_special_tokens(
-        {"additional_special_tokens": token_names}
-    )
-    model.resize_token_embeddings(len(tokenizer))
 
-    # Initialize defensive token embeddings with Gaussian N(0, I) as per paper
-    embed_weight = model.get_input_embeddings().weight.data
-    embed_dim = embed_weight.shape[1]
-    token_ids = [tokenizer.convert_tokens_to_ids(name) for name in token_names]
-    for tid in token_ids:
-        embed_weight[tid] = torch.randn(embed_dim, dtype=embed_weight.dtype)
+    def __init__(self, hidden_size, num_tokens=5, dtype=torch.bfloat16):
+        super().__init__()
+        self.num_tokens = num_tokens
+        self.prefix = nn.Parameter(
+            torch.randn(num_tokens, hidden_size, dtype=dtype)
+        )
 
-    logger.info("Added %d defensive tokens with Gaussian init", num_new)
+    def forward(self, batch_size):
+        return self.prefix.unsqueeze(0).expand(batch_size, -1, -1)
 
-    tokenizer.chat_template = _build_chat_template(num_tokens)
+    def prepend(self, base_embeds, attention_mask, labels=None):
+        """Prepend prefix embeddings and extend attention mask / labels."""
+        batch_size = base_embeds.size(0)
+        device = base_embeds.device
+        prefix_embeds = self.forward(batch_size)
+        inputs_embeds = torch.cat([prefix_embeds, base_embeds], dim=1)
 
-    return token_ids
+        prefix_mask = torch.ones(
+            batch_size, self.num_tokens,
+            dtype=attention_mask.dtype, device=device,
+        )
+        attention_mask = torch.cat([prefix_mask, attention_mask], dim=1)
 
+        if labels is not None:
+            prefix_labels = torch.full(
+                (batch_size, self.num_tokens),
+                -100, dtype=labels.dtype, device=device,
+            )
+            labels = torch.cat([prefix_labels, labels], dim=1)
 
-def freeze_model_except_defensive_tokens(model, token_ids):
-    """Freeze all parameters except the defensive token embeddings."""
-    for param in model.parameters():
-        param.requires_grad = False
+        return inputs_embeds, attention_mask, labels
 
-    embed_weight = model.get_input_embeddings().weight
-    embed_weight.requires_grad = True
+    def save(self, output_dir):
+        output_dir = Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        torch.save(self.prefix.data, output_dir / "defensive_prefix.pt")
+        logger.info("Saved defensive prefix to %s", output_dir)
 
-    # We will use a hook to zero out gradients for all tokens except defensive ones
-    def zero_non_defensive_grads(grad):
-        mask = torch.zeros_like(grad)
-        for tid in token_ids:
-            mask[tid] = 1.0
-        return grad * mask
-
-    embed_weight.register_hook(zero_non_defensive_grads)
-
-    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    logger.info("Trainable parameters: %d (only defensive token embeddings are updated)", trainable)
-
-
-def save_defensive_tokens(model, tokenizer, token_ids, output_dir):
-    """Save only the defensive token embeddings."""
-    output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    token_names = _build_defensive_token_names(len(token_ids))
-    embed_weight = model.get_input_embeddings().weight.data
-    tokens_data = {}
-    for name, tid in zip(token_names, token_ids):
-        tokens_data[name] = embed_weight[tid].cpu().float().tolist()
-
-    with open(output_dir / "defensive_tokens.json", "w") as f:
-        json.dump(tokens_data, f)
-
-    tokenizer.save_pretrained(output_dir)
-    logger.info("Saved defensive tokens to %s", output_dir)
-
-
-def load_defensive_tokens(model, tokenizer, checkpoint_dir):
-    """Load trained defensive token embeddings into model."""
-    checkpoint_dir = Path(checkpoint_dir)
-
-    with open(checkpoint_dir / "defensive_tokens.json") as f:
-        tokens_data = json.load(f)
-
-    num_tokens = len(tokens_data)
-    token_ids = add_defensive_tokens(model, tokenizer, num_tokens)
-    token_names = _build_defensive_token_names(num_tokens)
-
-    embed_weight = model.get_input_embeddings().weight.data
-    for name, tid in zip(token_names, token_ids):
-        embed_weight[tid] = torch.tensor(tokens_data[name], dtype=embed_weight.dtype)
-
-    logger.info("Loaded defensive tokens from %s", checkpoint_dir)
-    return token_ids
+    @classmethod
+    def load(cls, checkpoint_dir, device="cpu"):
+        checkpoint_dir = Path(checkpoint_dir)
+        prefix_data = torch.load(
+            checkpoint_dir / "defensive_prefix.pt",
+            map_location=device,
+            weights_only=True,
+        )
+        num_tokens, hidden_size = prefix_data.shape
+        instance = cls(hidden_size, num_tokens, dtype=prefix_data.dtype)
+        instance.prefix.data.copy_(prefix_data)
+        logger.info("Loaded defensive prefix from %s (%d tokens)", checkpoint_dir, num_tokens)
+        return instance
 
 
 def recursive_filter(text, filters=None):
     """Remove all special/filtered tokens from untrusted text."""
     if filters is None:
-        filters = FILTERED_BASE_TOKENS + _build_defensive_token_names(10)
+        filters = FILTERED_BASE_TOKENS
     orig = text
     for f in filters:
         text = text.replace(f, "")
@@ -148,7 +106,7 @@ def recursive_filter(text, filters=None):
     return text
 
 
-def format_prompt(tokenizer, instruction, data=None, use_defensive_tokens=False):
+def format_prompt(tokenizer, instruction, data=None):
     """Format input using the model's chat template.
 
     System role = trusted instruction.
@@ -163,6 +121,5 @@ def format_prompt(tokenizer, instruction, data=None, use_defensive_tokens=False)
         messages,
         tokenize=False,
         add_generation_prompt=True,
-        add_defensive_tokens=use_defensive_tokens,
     )
     return prompt

@@ -1,10 +1,11 @@
 """Step 1: Generate self-labeled dataset.
 
 Run base model on Cleaned Alpaca to produce target responses.
-Uses vLLM for fast batch inference if available, else HF generate.
+Uses mlx-lm on Apple Silicon, vLLM on Linux/CUDA, else HF generate.
 """
 
 import logging
+import platform
 import sys
 from pathlib import Path
 
@@ -19,6 +20,44 @@ from src.model import format_prompt
 
 logger = logging.getLogger(__name__)
 
+
+def self_label_with_mlx(config):
+    from pathlib import Path
+    import json
+    from mlx_lm import load, generate
+
+    model_name = config["model"]["name"]
+    output_path = Path(config["dataset"]["self_labeled_path"])
+    max_new_tokens = config["generation"]["max_new_tokens"]
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Loading model with mlx-lm: %s", model_name)
+    model, tokenizer = load(model_name)
+
+    ds = load_alpaca_cleaned()
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        for sample in tqdm(ds, desc="Self-labeling (mlx)"):
+            instruction = sample["instruction"]
+            data = sample.get("input", "")
+            prompt = format_prompt(tokenizer, instruction, data if data.strip() else None)
+
+            response = generate(
+                model,
+                tokenizer,
+                prompt=prompt,
+                max_tokens=max_new_tokens,
+            )
+
+            record = {
+                "instruction": instruction,
+                "data": data,
+                "base_response": response,
+            }
+            f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    logger.info("Self-labeling complete: %s", output_path)
 
 def self_label_with_vllm(config):
     from vllm import LLM, SamplingParams
@@ -91,8 +130,17 @@ def self_label_with_hf(config):
     logger.info("Self-labeling complete: %s", output_path)
 
 
+def _is_apple_silicon():
+    return sys.platform == "darwin" and platform.machine() == "arm64"
+
+
 def main():
     config = setup_script("self_label")
+
+    if _is_apple_silicon():
+        logger.info("Apple Silicon detected, using mlx-lm")
+        self_label_with_mlx(config)
+        return
 
     try:
         import vllm

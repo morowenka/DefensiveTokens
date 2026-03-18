@@ -49,11 +49,11 @@ bash run_all.sh
 
 Or individual steps:
 ```bash
-python scripts/prepare_alpaca_farm_eval.py
-python scripts/self_label.py
-python scripts/build_defensive_dataset.py
-python scripts/train_defensive_tokens.py
-python scripts/evaluate.py
+uv run python scripts/prepare_alpaca_farm_eval.py
+uv run python scripts/self_label.py
+uv run python scripts/build_defensive_dataset.py
+uv run python scripts/train_defensive_tokens.py
+uv run python scripts/evaluate.py
 ```
 
 ## Configuration

@@ -17,7 +17,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.common import setup_script
 from src.dataset import load_jsonl
 from src.evaluation import evaluate_defense, print_results_table, save_results
-from src.model import load_model_and_tokenizer, load_defensive_tokens
+from src.model import DefensivePrefix, load_model_and_tokenizer
 
 logger = logging.getLogger(__name__)
 
@@ -41,19 +41,22 @@ def main():
 
     # Free memory
     del model
-    if torch.cuda.is_available():
-        torch.cuda.empty_cache()
     import gc
     gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    elif torch.backends.mps.is_available():
+        torch.mps.empty_cache()
 
     # Evaluate DefensiveToken
     model, tokenizer = load_model_and_tokenizer(model_name, dtype)
-    load_defensive_tokens(model, tokenizer, config["training"]["output_dir"])
+    device = next(model.parameters()).device
+    prefix = DefensivePrefix.load(config["training"]["output_dir"], device=device)
     model.eval()
 
     dt_result = evaluate_defense(
         model, tokenizer, eval_samples, "defensive_token", config,
-        use_defensive_tokens=True,
+        prefix=prefix,
     )
     all_results.append(dt_result)
 
