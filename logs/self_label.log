@@ -1,0 +1,97 @@
+2026-03-17 13:54:51,477 [INFO] __main__: vLLM not available, using HuggingFace transformers
+2026-03-17 13:54:51,477 [INFO] src.model: Loading model: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 13:54:54,865 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:55,024 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:55,189 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:55,375 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:55,534 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:55,697 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:55,865 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-03-17 13:54:56,029 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:54:56,197 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/vocab.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:56,362 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/vocab.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:56,540 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/vocab.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:57,100 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/merges.txt "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:57,265 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/merges.txt "HTTP/1.1 200 OK"
+2026-03-17 13:54:57,437 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/merges.txt "HTTP/1.1 200 OK"
+2026-03-17 13:54:57,757 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/tokenizer.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:57,918 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:58,081 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer.json "HTTP/1.1 200 OK"
+2026-03-17 13:54:58,637 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/added_tokens.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:54:58,803 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/special_tokens_map.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:54:58,968 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/chat_template.jinja "HTTP/1.1 404 Not Found"
+2026-03-17 13:54:59,475 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct "HTTP/1.1 200 OK"
+2026-03-17 13:54:59,705 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:54:59,761 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:05,459 [INFO] __main__: vLLM available, using fast batch inference
+2026-03-17 13:57:25,949 [INFO] __main__: Loading model with vLLM: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 13:57:26,632 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:57:26,689 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:26,866 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:57:26,922 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:27,085 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:57:27,143 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:27,315 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:57:27,488 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:57:27,658 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:57:27,828 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:57:46,170 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:57:46,221 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:46,381 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:57:46,436 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-17 13:57:46,613 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-03-17 13:57:46,772 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:57:47,200 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct "HTTP/1.1 200 OK"
+2026-03-17 13:59:17,698 [INFO] __main__: vLLM available, using fast batch inference
+2026-03-17 13:59:19,014 [INFO] __main__: Loading model with vLLM: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 13:59:19,354 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:59:19,404 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:59:19,567 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:59:19,620 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:59:19,780 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:59:19,833 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:59:20,002 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:59:20,171 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:59:20,337 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:59:20,498 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:59:20,854 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:59:20,902 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 13:59:21,059 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:59:21,112 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-17 13:59:21,279 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-03-17 13:59:21,441 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 13:59:21,885 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct "HTTP/1.1 200 OK"
+2026-03-17 14:03:59,114 [INFO] __main__: vLLM available, using fast batch inference
+2026-03-17 14:04:00,976 [INFO] __main__: Loading model with vLLM: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:04:01,329 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 14:04:01,390 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 14:04:01,563 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 14:04:01,620 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 14:04:01,782 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 14:04:01,844 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 14:04:02,019 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 14:04:02,191 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 14:04:02,366 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/processor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 14:04:02,531 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/preprocessor_config.json "HTTP/1.1 404 Not Found"
+2026-03-17 14:04:02,953 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 14:04:03,015 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/config.json "HTTP/1.1 200 OK"
+2026-03-17 14:04:03,199 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/Qwen/Qwen2.5-3B-Instruct/resolve/main/tokenizer_config.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 14:04:03,256 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/models/Qwen/Qwen2.5-3B-Instruct/aa8e72537993ba99e69dfaafa59ed015b17504d1/tokenizer_config.json "HTTP/1.1 200 OK"
+2026-03-17 14:04:03,468 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-03-17 14:04:03,644 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-03-17 14:04:04,095 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/models/Qwen/Qwen2.5-3B-Instruct "HTTP/1.1 200 OK"
+2026-03-17 14:04:31,128 [INFO] __main__: vLLM available, using fast batch inference
+2026-03-17 14:04:32,953 [INFO] __main__: Loading model with vLLM: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:07:49,205 [INFO] __main__: vLLM available, using fast batch inference
+2026-03-17 14:07:50,859 [INFO] __main__: Loading model with vLLM: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:11:46,466 [INFO] __main__: Apple Silicon detected, using mlx-lm
+2026-03-17 14:11:48,931 [INFO] __main__: Loading model with mlx-lm: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:19:49,522 [INFO] src.dataset: Loaded 51760 samples from alpaca-cleaned
+2026-03-17 14:31:41,035 [INFO] __main__: Apple Silicon detected, using mlx-lm
+2026-03-17 14:31:42,430 [INFO] __main__: Loading model with mlx-lm: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:31:47,524 [INFO] src.dataset: Loaded 51760 samples from alpaca-cleaned
+2026-03-17 14:38:50,080 [INFO] __main__: Apple Silicon detected, using mlx-lm
+2026-03-17 14:38:51,694 [INFO] __main__: Loading model with mlx-lm: Qwen/Qwen2.5-3B-Instruct
+2026-03-17 14:38:56,155 [INFO] src.dataset: Loaded 51760 samples from alpaca-cleaned
+2026-03-17 14:38:56,164 [INFO] src.dataset: Reduced dataset to 5000 samples
+2026-03-18 00:55:56,827 [INFO] __main__: Self-labeling complete: /Users/m.basov/Desktop/ITMO/llm_def/data/self_labeled.jsonl

@@ -1,0 +1,30 @@
+2026-03-17 13:36:46,438 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:36:46,606 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/README.md "HTTP/1.1 200 OK"
+2026-03-17 13:36:46,803 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/README.md "HTTP/1.1 200 OK"
+2026-03-17 13:36:46,999 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm.py "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:36:47,161 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm.py "HTTP/1.1 200 OK"
+2026-03-17 13:36:47,327 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm.py "HTTP/1.1 200 OK"
+2026-03-17 13:39:28,631 [ERROR] datasets.load: `trust_remote_code` is not supported anymore.
+Please check that the Hugging Face dataset 'tatsu-lab/alpaca_farm' isn't based on a loading script and remove `trust_remote_code`.
+If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
+2026-03-17 13:39:28,976 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:39:29,033 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/README.md "HTTP/1.1 200 OK"
+2026-03-17 13:42:11,163 [ERROR] datasets.load: `trust_remote_code` is not supported anymore.
+Please check that the Hugging Face dataset 'tatsu-lab/alpaca_farm' isn't based on a loading script and remove `trust_remote_code`.
+If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
+2026-03-17 13:42:11,492 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:42:11,543 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/README.md "HTTP/1.1 200 OK"
+2026-03-17 13:42:49,833 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/README.md "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:42:49,882 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/README.md "HTTP/1.1 200 OK"
+2026-03-17 13:43:05,989 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/data/alpaca_farm_evaluation.json "HTTP/1.1 404 Not Found"
+2026-03-17 13:43:23,104 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/alpaca_farm_evaluation.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:43:23,405 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm_evaluation.json "HTTP/1.1 200 OK"
+2026-03-17 13:43:23,690 [INFO] httpx: HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm_evaluation.json "HTTP/1.1 200 OK"
+2026-03-17 13:43:23,867 [INFO] src.dataset: Loaded 805 AlpacaFarm eval samples
+2026-03-17 13:43:23,886 [INFO] __main__: Samples with non-empty input: 208
+2026-03-17 13:43:23,888 [INFO] src.dataset: Saved 208 records to /Users/m.basov/Desktop/ITMO/llm_def/data/alpaca_farm_eval.jsonl
+2026-03-17 13:45:52,503 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/datasets/tatsu-lab/alpaca_farm/resolve/main/alpaca_farm_evaluation.json "HTTP/1.1 307 Temporary Redirect"
+2026-03-17 13:45:52,560 [INFO] httpx: HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/tatsu-lab/alpaca_farm/e576524ca841af3c36fd6912e68e5920430928c1/alpaca_farm_evaluation.json "HTTP/1.1 200 OK"
+2026-03-17 13:45:52,571 [INFO] src.dataset: Loaded 805 AlpacaFarm eval samples
+2026-03-17 13:45:52,586 [INFO] __main__: Samples with non-empty input: 208
+2026-03-17 13:45:52,588 [INFO] src.dataset: Saved 208 records to /Users/m.basov/Desktop/ITMO/llm_def/data/alpaca_farm_eval.jsonl
