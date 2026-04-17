@@ -1,9 +1,0 @@
-2026-03-18 11:15:08,983 [INFO] src.dataset: Building defensive dataset from 5000 self-labeled samples
-2026-03-18 11:15:09,186 [INFO] src.dataset: Saved 5000 records to /Users/m.basov/Desktop/ITMO/llm_def/data/defensive_dataset.jsonl
-2026-03-18 11:15:09,187 [INFO] src.dataset: Defensive dataset: 5000 total, 928 injected, 4072 clean
-2026-03-18 12:05:24,722 [INFO] src.dataset: Building defensive dataset from 5000 self-labeled samples
-2026-03-18 12:05:25,124 [INFO] src.dataset: Saved 5000 records to /Users/m.basov/Desktop/ITMO/llm_def/data/defensive_dataset.jsonl
-2026-03-18 12:05:25,125 [INFO] src.dataset: Defensive dataset: 5000 total, 1857 injected, 3143 clean
-2026-03-18 12:09:56,299 [INFO] src.dataset: Building defensive dataset from 5000 self-labeled samples
-2026-03-18 12:09:56,814 [INFO] src.dataset: Saved 5000 records to /Users/m.basov/Desktop/ITMO/llm_def/data/defensive_dataset.jsonl
-2026-03-18 12:09:56,814 [INFO] src.dataset: Defensive dataset: 5000 total, 2500 injected, 2500 clean
