@@ -1,0 +1,11 @@
+model_id: "hivetrace/hivetrace-guard-base-2025-10-23"
+
+batch_size: 16
+max_length: 512
+
+# Minimum variants per attack category
+min_variants_per_category: 20
+
+results_dir: "results"
+results_csv: "results/results.csv"
+report_md: "results/report.md"
